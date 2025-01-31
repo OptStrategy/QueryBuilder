@@ -112,7 +112,7 @@ class DBFactory:
         min_jobs_writer_connection = -1
 
         for i, write_connection in enumerate(self.write_connections):
-            tmp_write_jobs = await write_connection.get_jobs()
+            tmp_write_jobs = write_connection.get_jobs()
             if tmp_write_jobs < min_write_jobs:
                 min_write_jobs = tmp_write_jobs
                 min_jobs_writer_connection = i
@@ -121,7 +121,7 @@ class DBFactory:
         min_jobs_reader_connection = -1
 
         for s, read_connection in enumerate(self.read_connections):
-            tmp_read_jobs = await read_connection.get_jobs()
+            tmp_read_jobs = read_connection.get_jobs()
             if tmp_read_jobs < min_read_jobs:
                 min_read_jobs = tmp_read_jobs
                 min_jobs_reader_connection = s
