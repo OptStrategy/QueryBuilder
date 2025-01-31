@@ -7,20 +7,22 @@ from src.query_builder.exceptions.db_factory_exception import DBFactoryException
 
 
 class DBFactory:
-    MAX_CONNECTION_COUNT = 1000000000
+    MAX_CONNECTION_COUNT = 200
 
-    def __init__(self,
-                 host: str,
-                 db_name: str,
-                 username: str,
-                 password: str,
-                 write_port: int = 3306,
-                 read_port: int = 3306,
-                 write_instance_count: int = 2,
-                 read_instance_count: int = 2,
-                 timeout: int = 2,
-                 charset: str = 'utf8mb4',
-                 debug_mode: bool = False):
+    def __init__(
+            self,
+            host: str,
+            db_name: str,
+            username: str,
+            password: str,
+            write_port: int = 3306,
+            read_port: int = 3306,
+            write_instance_count: int = 2,
+            read_instance_count: int = 2,
+            timeout: int = 2,
+            charset: str = 'utf8mb4',
+            debug_mode: bool = False
+    ):
 
         self.logs: List[Dict] = []
         self.host = host
