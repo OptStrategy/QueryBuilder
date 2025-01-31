@@ -1,6 +1,7 @@
 import asyncio
-import aiomysql
 from typing import List, Dict
+
+import aiomysql
 
 from src.query_builder.core.db_worker import DBWorker
 from src.query_builder.exceptions.db_factory_exception import DBFactoryException
