@@ -4,6 +4,7 @@ from typing import List, Dict
 
 from src.query_builder.core.db_worker import DBWorker
 from src.query_builder.exceptions.db_factory_exception import DBFactoryException
+from src.query_builder.query_builder import QueryBuilder
 
 
 class DBFactory:
@@ -75,8 +76,8 @@ class DBFactory:
     async def get_query_builder(self):
         if not self.read_connections or not self.write_connections:
             raise DBFactoryException("Connections Not Created")
-        # You can implement a QueryBuilder class here as per your needs (e.g., to construct SQL queries).
-        return "Query Builder Placeholder"
+
+        return QueryBuilder(self)
 
     async def query(self, query: str):
         is_write = not query.lower().startswith(('select', 'show'))
