@@ -1,4 +1,3 @@
-from idlelib.undo import InsertCommand
 from typing import Optional
 
 from src.query_builder.clauses.delete import Delete
