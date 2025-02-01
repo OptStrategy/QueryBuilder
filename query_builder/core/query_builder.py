@@ -1,9 +1,9 @@
-from query_builder.clauses.delete import Delete
-from query_builder.clauses.insert import Insert
-from query_builder.clauses.insert_update import InsertUpdate
-from query_builder.clauses.mulit_insert_update import MultiInsertUpdate
-from query_builder.clauses.select import Select
-from query_builder.clauses.update import Update
+from ..clauses.delete import Delete
+from ..clauses.insert import Insert
+from ..clauses.insert_update import InsertUpdate
+from ..clauses.mulit_insert_update import MultiInsertUpdate
+from ..clauses.select import Select
+from ..clauses.update import Update
 
 
 class QueryBuilder:
