@@ -10,9 +10,9 @@ setup(
     # long_description_content_type="text/markdown",
     url='https://github.com/OptStrategy/QueryBuilder',
     package_dir={
-            '': 'query_builder',
+            '': 'src',
     },
-    packages=find_packages(where='query_builder'),
+    packages=find_packages(where='src'),
     install_requires=[
         "aiomysql==0.2.0",
         "PyMySQL==1.1.1",
