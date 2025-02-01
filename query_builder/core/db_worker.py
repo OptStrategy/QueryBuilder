@@ -2,7 +2,7 @@ from typing import Dict, Any
 
 import aiomysql
 
-from src.query_builder.core.query_result import QueryResult
+from query_builder.core.query_result import QueryResult
 
 
 class DBWorker:

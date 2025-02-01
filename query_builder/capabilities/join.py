@@ -1,8 +1,8 @@
 from typing import List, Optional, Self
 
-from src.query_builder.enums.join_direction import JoinDirection
-from src.query_builder.exceptions.query_builder_exception import QueryBuilderException
-from src.query_builder.utils.escape import Escape
+from query_builder.enums.join_direction import JoinDirection
+from query_builder.exceptions.query_builder_exception import QueryBuilderException
+from query_builder.utils.escape import Escape
 
 
 class Join(Escape):

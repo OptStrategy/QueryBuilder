@@ -1,15 +1,15 @@
 from typing import List, Optional, Union, Self
 
-from src.query_builder.capabilities.from_capability import From
-from src.query_builder.capabilities.group import Group
-from src.query_builder.capabilities.join import Join
-from src.query_builder.capabilities.limit import Limit
-from src.query_builder.capabilities.order import Order
-from src.query_builder.capabilities.where import Where
-from src.query_builder.core.builder import Builder
-from src.query_builder.core.e_query import EQuery
-from src.query_builder.core.query import Query
-from src.query_builder.exceptions.query_builder_exception import QueryBuilderException
+from query_builder.capabilities.from_capability import From
+from query_builder.capabilities.group import Group
+from query_builder.capabilities.join import Join
+from query_builder.capabilities.limit import Limit
+from query_builder.capabilities.order import Order
+from query_builder.capabilities.where import Where
+from query_builder.core.builder import Builder
+from query_builder.core.e_query import EQuery
+from query_builder.core.query import Query
+from query_builder.exceptions.query_builder_exception import QueryBuilderException
 
 
 class Select(Where, From, Limit, Join, Group, Order):
