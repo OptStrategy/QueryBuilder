@@ -1,4 +1,4 @@
-from typing import List, Union, Self
+from typing import List, Union, Self, Any
 
 from ..exceptions.query_builder_exception import QueryBuilderException
 from ..utils.escape import Escape
@@ -10,7 +10,7 @@ class AddRow(Escape):
     _columns: List[str] = []
     _rows: List[List[Union[str, bool]]] = []
 
-    def add_row(self, row: List[Union[str, bool]], escape_value: bool = True) -> Self:
+    def add_row(self, row: List[Union[Any]], escape_value: bool = True) -> Self:
         """
         Add a single row to the table.
 
