@@ -14,7 +14,7 @@ class Insert(Into, AddRow):
     def __init__(self, factory = None):
         self._factory = factory
 
-    def set_columns(self, columns, escape_key=True):
+    def set_columns(self, columns: List[str], escape_key=True):
         if len(self._rows) != 0:
             raise QueryBuilderException("Instance has some rows, so columns can't change")
 
