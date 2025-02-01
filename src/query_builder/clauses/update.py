@@ -3,7 +3,6 @@ from typing import List, Any
 from src.query_builder.capabilities.table import Table
 from src.query_builder.capabilities.where import Where
 from src.query_builder.core.builder import Builder
-from src.query_builder.core.db_factory import DBFactory
 from src.query_builder.core.e_query import EQuery
 from src.query_builder.core.query import Query
 from src.query_builder.exceptions.query_builder_exception import QueryBuilderException
@@ -12,7 +11,7 @@ from src.query_builder.exceptions.query_builder_exception import QueryBuilderExc
 class Update(Table, Where):
     _updates: List[Any] = []  # TODO: maybe the list may be of type str
 
-    def __init__(self, factory: DBFactory = None):
+    def __init__(self, factory=None):
         self._factory = factory
 
     def set_update(self, column: str, update, escape=True):

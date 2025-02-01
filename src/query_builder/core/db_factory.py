@@ -41,7 +41,7 @@ class DBFactory:
         self.write_connections: List[DBWorker] = []
         self.read_connections: List[DBWorker] = []
 
-        asyncio.run(self.create_connections())
+        # asyncio.run(self.create_connections())
 
     async def create_connections(self):
         """Create DB connections using aiomysql."""
@@ -74,7 +74,9 @@ class DBFactory:
             )
             self.read_connections.append(DBWorker(connection))
 
-    async def get_query_builder(self):
+        print('Connected')
+
+    async def get_query_builder(self) -> QueryBuilder:
         if not self.read_connections or not self.write_connections:
             raise DBFactoryException("Connections Not Created")
 

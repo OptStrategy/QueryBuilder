@@ -37,10 +37,14 @@ class DBWorker:
 
     def handle_result(self, result: QueryResult) -> Dict[str, Any]:
         if result.result_rows is not None:
+            def map_to_dict(row):
+                return {result.result_fields[i]: value for i, value in enumerate(row)}
+
+            result_as_dicts = [map_to_dict(row) for row in result.result_rows]
             return {
                 'result': True,
                 'count': len(result.result_rows),
-                'rows': result.result_rows
+                'rows': result_as_dicts
             }
 
         res: Dict[str, Any] = {

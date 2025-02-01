@@ -7,8 +7,8 @@ from src.query_builder.utils.escape import Escape
 class Limit(Escape):
     """Class to manage limit and offset in SQL queries."""
 
-    _offset: int
-    _count: int
+    _offset: int = None
+    _count: int = None
 
     def set_offset(self, offset: Union[int, float]) -> Self:
         """

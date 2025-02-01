@@ -1,13 +1,12 @@
 from typing import List, Optional, Union, Self
 
+from src.query_builder.capabilities.from_capability import From
 from src.query_builder.capabilities.group import Group
 from src.query_builder.capabilities.join import Join
 from src.query_builder.capabilities.limit import Limit
 from src.query_builder.capabilities.order import Order
 from src.query_builder.capabilities.where import Where
-from src.query_builder.capabilities.from_capability import From
 from src.query_builder.core.builder import Builder
-from src.query_builder.core.db_factory import DBFactory
 from src.query_builder.core.e_query import EQuery
 from src.query_builder.core.query import Query
 from src.query_builder.exceptions.query_builder_exception import QueryBuilderException
@@ -17,7 +16,7 @@ class Select(Where, From, Limit, Join, Group, Order):
     _statements: List = []
     _is_distinct: bool = False
 
-    def __init__(self,factory: Optional[DBFactory] = None):
+    def __init__(self,factory = None):
         self._factory = factory
 
     def add_column(self, column: str, escape: bool = True) -> Self:

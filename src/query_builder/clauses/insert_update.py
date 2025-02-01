@@ -2,7 +2,6 @@ from typing import Dict, List, Any
 
 from src.query_builder.capabilities.into import Into
 from src.query_builder.core.builder import Builder
-from src.query_builder.core.db_factory import DBFactory
 from src.query_builder.core.e_query import EQuery
 from src.query_builder.core.query import Query
 from src.query_builder.exceptions.query_builder_exception import QueryBuilderException
@@ -13,7 +12,7 @@ class InsertUpdate(Into):
     _row: List[Any] = []
     _updates: Dict = {}
 
-    def __init__(self, factory: DBFactory = None):
+    def __init__(self, factory=None):
         self._factory = factory
 
     def set_columns(self, columns, escape_key=True):
