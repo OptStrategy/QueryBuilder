@@ -19,4 +19,9 @@ setup(
         "setuptools==75.8.0",
     ],
     python_requires='>=3.6',
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",  # Specify your actual license here
+        "Operating System :: OS Independent",
+    ],
 )
