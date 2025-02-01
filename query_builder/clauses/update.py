@@ -1,11 +1,11 @@
 from typing import List, Any
 
-from query_builder.capabilities.table import Table
-from query_builder.capabilities.where import Where
-from query_builder.core.builder import Builder
-from query_builder.core.e_query import EQuery
-from query_builder.core.query import Query
-from query_builder.exceptions.query_builder_exception import QueryBuilderException
+from ..capabilities.table import Table
+from ..capabilities.where import Where
+from ..core.builder import Builder
+from ..core.e_query import EQuery
+from ..core.query import Query
+from ..exceptions.query_builder_exception import QueryBuilderException
 
 
 class Update(Table, Where):

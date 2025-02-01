@@ -1,7 +1,7 @@
 from typing import List, Union, Self
 
-from query_builder.exceptions.query_builder_exception import QueryBuilderException
-from query_builder.utils.escape import Escape
+from ..exceptions.query_builder_exception import QueryBuilderException
+from ..utils.escape import Escape
 
 
 class Group(Escape):

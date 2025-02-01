@@ -1,4 +1,4 @@
-from query_builder.exceptions.query_builder_exception import QueryBuilderException
+from ..exceptions.query_builder_exception import QueryBuilderException
 
 
 class Escape:

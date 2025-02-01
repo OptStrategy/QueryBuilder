@@ -1,4 +1,4 @@
-from query_builder.exceptions.db_factory_exception import DBFactoryException
+from ..exceptions.db_factory_exception import DBFactoryException
 
 
 class EQuery:

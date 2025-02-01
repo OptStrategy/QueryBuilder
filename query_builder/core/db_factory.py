@@ -3,9 +3,9 @@ from typing import List, Dict
 
 import aiomysql
 
-from query_builder.core.db_worker import DBWorker
-from query_builder.exceptions.db_factory_exception import DBFactoryException
-from query_builder.query_builder import QueryBuilder
+from ..core.db_worker import DBWorker
+from ..exceptions.db_factory_exception import DBFactoryException
+from ..query_builder import QueryBuilder
 
 
 class DBFactory:

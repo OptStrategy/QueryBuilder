@@ -1,10 +1,10 @@
 from typing import Dict, List, Any
 
-from query_builder.capabilities.into import Into
-from query_builder.core.builder import Builder
-from query_builder.core.e_query import EQuery
-from query_builder.core.query import Query
-from query_builder.exceptions.query_builder_exception import QueryBuilderException
+from ..capabilities.into import Into
+from ..core.builder import Builder
+from ..core.e_query import EQuery
+from ..core.query import Query
+from ..exceptions.query_builder_exception import QueryBuilderException
 
 
 class InsertUpdate(Into):
