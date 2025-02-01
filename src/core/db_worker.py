@@ -20,9 +20,9 @@ class DBWorker:
             self.end_job()
             return self.handle_exception(e)
 
-    async def execute_query(self, sql: str) -> QueryResult:
+    async def execute_query(self, query: str) -> QueryResult:
         async with self._connection.cursor() as cursor:
-            await cursor.execute(sql)
+            await cursor.execute(query)
             result_rows = await cursor.fetchall()
             result_fields = [desc[0] for desc in cursor.description]
             insert_id = cursor.lastrowid
