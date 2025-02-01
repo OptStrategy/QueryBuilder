@@ -5,7 +5,7 @@ import aiomysql
 
 from ..core.db_worker import DBWorker
 from ..exceptions.db_factory_exception import DBFactoryException
-from query_builder.core.query_builder import QueryBuilder
+from .query_builder import QueryBuilder
 
 
 class DBFactory:
