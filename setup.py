@@ -6,8 +6,8 @@ setup(
     author='Amirhossein Adibinia',
     author_email='amir.adibinia@gmail.com',
     description="an async Query Builder for MySQL",
-    long_description=open("README.md").read(),
-    long_description_content_type="text/markdown",
+    # long_description=open("README.md").read(),
+    # long_description_content_type="text/markdown",
     url='https://github.com/OptStrategy/QueryBuilder',
     package_dir={
             '': 'src',
