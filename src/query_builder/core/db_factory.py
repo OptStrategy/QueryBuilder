@@ -76,7 +76,7 @@ class DBFactory:
 
         print('Connected')
 
-    async def get_query_builder(self) -> QueryBuilder:
+    def get_query_builder(self) -> QueryBuilder:
         if not self.read_connections or not self.write_connections:
             raise DBFactoryException("Connections Not Created")
 
