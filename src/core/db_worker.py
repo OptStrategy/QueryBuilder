@@ -14,6 +14,7 @@ class DBWorker:
         self.start_job()
         try:
             result = await self.execute_query(sql)
+            print(result)
             self.end_job()
             return self.handle_result(result)
         except Exception as e:
@@ -23,10 +24,19 @@ class DBWorker:
     async def execute_query(self, query: str) -> QueryResult:
         async with self._connection.cursor() as cursor:
             await cursor.execute(query)
-            result_rows = await cursor.fetchall()
-            result_fields = [desc[0] for desc in cursor.description]
+            if cursor.description is None:
+                # For INSERT queries, no result fields or rows are returned
+                result_fields = None
+                result_rows = None
+            else:
+                # For SELECT queries, cursor.description contains column info
+                result_fields = [desc[0] for desc in cursor.description]
+                result_rows = await cursor.fetchall()
+
             insert_id = cursor.lastrowid
             affected_rows = cursor.rowcount
+
+            print()
 
             return QueryResult(
                 insert_id=insert_id,
