@@ -8,7 +8,7 @@ class AddRow(Escape):
     """Class to manage adding rows to a table for SQL operations."""
 
     _columns: List[str] = []
-    _rows: List[List[Union[str, bool]]] = []
+    _rows: List[List[Union[str, bool, int, float]]] = []
 
     def add_row(self, row: List[Union[Any]], escape_value: bool = True) -> Self:
         """
