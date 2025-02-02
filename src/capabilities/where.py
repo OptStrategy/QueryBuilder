@@ -177,8 +177,7 @@ class Where(Escape):
     def append(self, key, operator, value):
         """Append a condition to the WHERE statement."""
         if len(self._where_statements) == 0:
-            state = 0
-        else:
-            state = len(self._where_statements) - 1
+            self._where_statements.append([])  # Ensure there is at least one list to append to
 
+        state = len(self._where_statements) - 1
         self._where_statements[state].append(f"{key} {operator} {value}")
