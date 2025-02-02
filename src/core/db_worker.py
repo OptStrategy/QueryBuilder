@@ -14,7 +14,6 @@ class DBWorker:
         self.start_job()
         try:
             result = await self.execute_query(sql)
-            print(result)
             self.end_job()
             return self.handle_result(result)
         except Exception as e:

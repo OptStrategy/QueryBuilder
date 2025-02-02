@@ -11,7 +11,7 @@ from ..exceptions.query_builder_exception import QueryBuilderException
 class MultiInsertUpdate(Into, AddRow):
     _alias: str
     _rows: List[Any] = []  # TODO: maybe the type of the list must be str
-    _updates: Dict[str, Any] = []
+    _updates: Dict[str, Any] = {}
 
     def __init__(self, factory = None):
         self._factory = factory
@@ -21,7 +21,10 @@ class MultiInsertUpdate(Into, AddRow):
             raise QueryBuilderException("Instance has some rows, so columns can't change")
 
         if escape_key:
-            columns = {column_name: self._key_escape(column_value) for column_name, column_value in columns.items()}
+            columns = [
+                self._key_escape(column_value) if escape_key else column_value
+                for column_value in columns
+            ]
 
         self._columns = columns
         return self
@@ -43,7 +46,7 @@ class MultiInsertUpdate(Into, AddRow):
         self._updates[key] = value
         return self
 
-    def add_updates(self, updates, escape_value=True, escape_key=True):
+    def add_updates(self, updates: Dict[str, Any], escape_value=True, escape_key=True):
         for update_key, update_value in updates.items():
             self.add_update(update_key, update_value, escape_value, escape_key)
         return self

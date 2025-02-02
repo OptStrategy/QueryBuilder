@@ -23,7 +23,10 @@ class InsertUpdate(Into):
             raise QueryBuilderException("Instance has some rows, so columns can't change")
 
         if escape_key:
-            columns = {column_name: self._key_escape(column_value) for column_name, column_value in columns.items()}
+            columns = [
+                self._key_escape(column_value) if escape_key else column_value
+                for column_value in columns
+            ]
 
         self._columns = columns
         return self
@@ -39,7 +42,7 @@ class InsertUpdate(Into):
             raise QueryBuilderException("Columns and row must have the same count")
 
         if escape_value:
-            row = {item_key: self._escape(item_val) for item_key, item_val in row.items()}
+            row = [self._escape(value) for value in row]
 
         self._row = row
         return self
@@ -60,7 +63,7 @@ class InsertUpdate(Into):
         self._updates[column] = value
         return self
 
-    def set_updates(self, updates, escape_values=True, escape_keys=True):
+    def set_updates(self, updates: Dict[str, Any], escape_values=True, escape_keys=True):
         for update_key, update_value in updates.items():
             self.set_update(update_key, update_value, escape_values, escape_keys)
 
