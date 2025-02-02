@@ -15,8 +15,7 @@ class Builder:
 
     @staticmethod
     def set_insert_rows(rows: list) -> str:
-        base_query = ", ".join(f"({', '.join(row)})" for row in rows)
-        return base_query
+        return ", ".join(f"({', '.join(map(str, row))})" for row in rows)
 
     @staticmethod
     def set_insert_columns(columns: list) -> str:
