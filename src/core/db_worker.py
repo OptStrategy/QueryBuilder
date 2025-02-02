@@ -35,8 +35,6 @@ class DBWorker:
             insert_id = cursor.lastrowid
             affected_rows = cursor.rowcount
 
-            print()
-
             return QueryResult(
                 insert_id=insert_id,
                 affected_rows=affected_rows,
