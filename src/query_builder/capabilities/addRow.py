@@ -1,7 +1,7 @@
 from typing import List, Union, Self, Any
 
 from ..exceptions.query_builder_exception import QueryBuilderException
-from ...query_builder.utils.escape import Escape
+from ..utils.escape import Escape
 
 
 class AddRow(Escape):
