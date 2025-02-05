@@ -1,7 +1,7 @@
 from typing import Self
 
 from ..exceptions.query_builder_exception import QueryBuilderException
-from ..utils.escape import Escape
+from src.query_builder.utils.escape import Escape
 
 
 class Table(Escape):

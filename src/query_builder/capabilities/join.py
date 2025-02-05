@@ -2,7 +2,7 @@ from typing import List, Optional, Self
 
 from ..enums.join_direction import JoinDirection
 from ..exceptions.query_builder_exception import QueryBuilderException
-from ..utils.escape import Escape
+from src.query_builder.utils.escape import Escape
 
 
 class Join(Escape):

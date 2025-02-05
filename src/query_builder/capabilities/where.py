@@ -1,6 +1,6 @@
 from typing import List, Self
 
-from ..utils.escape import Escape
+from src.query_builder.utils.escape import Escape
 
 
 class Where(Escape):
