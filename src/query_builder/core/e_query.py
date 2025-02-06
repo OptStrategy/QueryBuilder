@@ -1,3 +1,5 @@
+from typing import Dict, Any
+
 from ..exceptions.db_factory_exception import DBFactoryException
 
 
@@ -6,7 +8,7 @@ class EQuery:
         self.query = query
         self.factory = factory
 
-    async def commit(self) -> dict:
+    async def commit(self) -> Dict[str, Any]:
         try:
             result = await self.factory.query(self.query)
             return result
@@ -16,7 +18,7 @@ class EQuery:
                 'error': str(e)
             }
 
-    async def get_query(self) -> dict:
+    async def get_query(self) -> Dict[str, Any]:
         return {
             'result': True,
             'query': self.query

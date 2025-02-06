@@ -1,5 +1,5 @@
 import asyncio
-from typing import List, Dict
+from typing import List, Dict, Any
 
 import aiomysql
 
@@ -81,7 +81,7 @@ class DBFactory:
 
         return QueryBuilder(self)
 
-    async def query(self, query: str):
+    async def query(self, query: str) -> Dict[str, Any]:
         is_write = not query.lower().startswith(('select', 'show'))
         best_connections = await self.__get_best_connection()
 
