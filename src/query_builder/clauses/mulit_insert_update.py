@@ -1,4 +1,4 @@
-from typing import List, Any, Dict
+from typing import List, Any, Dict, Self, Union
 
 from ..capabilities.addRow import AddRow
 from ..capabilities.into import Into
@@ -13,10 +13,10 @@ class MultiInsertUpdate(Into, AddRow):
     _rows: List[Any] = []  # TODO: maybe the type of the list must be str
     _updates: Dict[str, Any] = {}
 
-    def __init__(self, factory = None):
+    def __init__(self, factory=None):
         self._factory = factory
 
-    def set_columns(self, columns, escape_key=True):
+    def set_columns(self, columns, escape_key=True) -> Self:
         if len(self._rows) != 0:
             raise QueryBuilderException("Instance has some rows, so columns can't change")
 
@@ -29,11 +29,11 @@ class MultiInsertUpdate(Into, AddRow):
         self._columns = columns
         return self
 
-    def set_insert_alias(self, alias_name, escape=True):
+    def set_insert_alias(self, alias_name, escape=True) -> Self:
         self._alias = self._key_escape(alias_name) if escape else alias_name
         return self
 
-    def add_update(self, key, value, escape_value=True, escape_key=True):
+    def add_update(self, key, value, escape_value=True, escape_key=True) -> Self:
         if len(self._columns) == 0:
             raise QueryBuilderException("Columns not set")
 
@@ -46,12 +46,12 @@ class MultiInsertUpdate(Into, AddRow):
         self._updates[key] = value
         return self
 
-    def add_updates(self, updates: Dict[str, Any], escape_value=True, escape_key=True):
+    def add_updates(self, updates: Dict[str, Any], escape_value=True, escape_key=True) -> Self:
         for update_key, update_value in updates.items():
             self.add_update(update_key, update_value, escape_value, escape_key)
         return self
 
-    def compile(self):
+    def compile(self) -> Union[Query, EQuery]:
         if not self._into_table or not self._into_table.strip():
             raise QueryBuilderException("Table required")
 
