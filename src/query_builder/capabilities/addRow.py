@@ -32,7 +32,7 @@ class AddRow(Escape):
         self._rows.append(row)
         return self
 
-    def add_rows(self, rows: List[List[Union[str, bool]]], escape_value: bool = True) -> Self:
+    def add_rows(self, rows: List[List[Union[Any]]], escape_value: bool = True) -> Self:
         """
         Add multiple rows to the table.
 
