@@ -3,6 +3,7 @@ from typing import List, Dict, Any
 
 import aiomysql
 
+from .db_result import DBResult
 from ..core.db_worker import DBWorker
 from ..exceptions.db_factory_exception import DBFactoryException
 from .query_builder import QueryBuilder
@@ -81,7 +82,7 @@ class DBFactory:
 
         return QueryBuilder(self)
 
-    async def query(self, query: str) -> Dict[str, Any]:
+    async def query(self, query: str) -> DBResult:
         is_write = not query.lower().startswith(('select', 'show'))
         best_connections = await self.__get_best_connection()
 

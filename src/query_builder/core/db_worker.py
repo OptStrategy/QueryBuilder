@@ -2,6 +2,7 @@ from typing import Dict, Any
 
 import aiomysql
 
+from .db_result import DBResult
 from ..core.query_result import QueryResult
 
 
@@ -10,7 +11,7 @@ class DBWorker:
         self._connection: aiomysql.Connection = connection
         self._jobs: int = 0
 
-    async def query(self, sql: str) -> Dict[str, Any]:
+    async def query(self, sql: str) -> DBResult:
         self.start_job()
         try:
             result = await self.execute_query(sql)
@@ -42,33 +43,29 @@ class DBWorker:
                 result_rows=result_rows,
             )
 
-    def handle_result(self, result: QueryResult) -> Dict[str, Any]:
+    def handle_result(self, result: QueryResult) -> DBResult:
         if result.result_rows is not None:
             def map_to_dict(row):
                 return {result.result_fields[i]: value for i, value in enumerate(row)}
 
             result_as_dicts = [map_to_dict(row) for row in result.result_rows]
-            return {
-                'result': True,
-                'count': len(result.result_rows),
-                'rows': result_as_dicts
-            }
+            return DBResult(
+                is_success=True,
+                rows=result_as_dicts,
+                count=len(result.result_rows)
+            )
 
-        res: Dict[str, Any] = {
-            'result': True,
-            'affectedRows': result.affected_rows
-        }
+        return DBResult(
+            is_success=True,
+            affected_rows=result.affected_rows,
+            insert_id=result.insert_id if result.insert_id is not None else None
+        )
 
-        if result.insert_id != 0:
-            res['insertId'] = result.insert_id
-
-        return res
-
-    def handle_exception(self, exception: Exception) -> Dict[str, Any]:
-        return {
-            'result': False,
-            'error': str(exception)
-        }
+    def handle_exception(self, exception: Exception) -> DBResult:
+        return DBResult(
+            is_success=False,
+            message=str(exception)
+        )
 
     def start_job(self) -> None:
         self._jobs += 1

@@ -9,4 +9,4 @@ class DBResult:
     count: Optional[int] = 0
     insert_id: Optional[int] = None
     affected_rows: Optional[int] = None
-    message: Optional[str] = None
+    message: Optional[str] = None  # In case of error it represents the error_message, else it may represent the executed query
