@@ -9,9 +9,12 @@ from ..exceptions.query_builder_exception import QueryBuilderException
 
 
 class Update(Table, Where):
-    _updates: List[Any] = []  # TODO: maybe the list may be of type str
-
     def __init__(self, factory=None):
+        Table.__init__(self)
+        Where.__init__(self)
+
+        self._updates: List[Any] = []  # TODO: maybe the list may be of type str
+
         self._factory = factory
 
     def set_update(self, column: str, update, escape=True):

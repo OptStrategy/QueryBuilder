@@ -8,7 +8,8 @@ from ..utils.escape import Escape
 class Join(Escape):
     """Class to manage SQL joins."""
 
-    _joins: List[str] = []
+    def __init__(self):
+        self._joins: List[str] = []
 
     def left_join(self, table: str, from_on: str, to_on: str, escape_on: bool = True, alias: Optional[str] = None) -> Self:
         """Add a LEFT JOIN clause."""

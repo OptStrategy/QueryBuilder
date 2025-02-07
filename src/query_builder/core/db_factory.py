@@ -10,11 +10,6 @@ from .query_builder import QueryBuilder
 
 
 class DBFactory:
-    _MAX_CONNECTION_COUNT = 200
-
-    _write_connections: List[DBWorker] = []
-    _read_connections: List[DBWorker] = []
-
     def __init__(
             self,
             host: str,
@@ -29,6 +24,10 @@ class DBFactory:
             charset: str = 'utf8mb4',
             debug_mode: bool = False
     ):
+        self._MAX_CONNECTION_COUNT = 200
+
+        self._write_connections: List[DBWorker] = []
+        self._read_connections: List[DBWorker] = []
 
         self._logs: List[Dict] = []
         self._host = host

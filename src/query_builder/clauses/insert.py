@@ -10,6 +10,9 @@ from ..exceptions.query_builder_exception import QueryBuilderException
 
 class Insert(Into, AddRow):
     def __init__(self, factory=None):
+        Into.__init__(self)
+        AddRow.__init__(self)
+
         self._factory = factory
 
     def set_columns(self, columns: List[str], escape_key=True):

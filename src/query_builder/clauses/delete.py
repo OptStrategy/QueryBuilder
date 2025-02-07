@@ -9,6 +9,10 @@ from ..exceptions.query_builder_exception import QueryBuilderException
 
 class Delete(From, Where, Limit):
     def __init__(self, factory=None):
+        From.__init__(self)
+        Where.__init__(self)
+        Limit.__init__(self)
+
         self._factory = factory
 
     def compile(self):

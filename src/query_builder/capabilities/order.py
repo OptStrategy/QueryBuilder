@@ -6,7 +6,8 @@ from ..utils.escape import Escape
 
 
 class Order(Escape):
-    _order_by: Dict = {}
+    def __init__(self):
+        self._order_by: Dict = {}
 
     def add_order(self, order_column: str, order_direction: Union[OrderDirection, str] = OrderDirection.NONE,
                   escape: bool = True) -> Self:

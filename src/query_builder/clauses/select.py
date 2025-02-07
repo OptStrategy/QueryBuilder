@@ -13,10 +13,17 @@ from ..exceptions.query_builder_exception import QueryBuilderException
 
 
 class Select(Where, From, Limit, Join, Group, Order):
-    _statements: List = []
-    _is_distinct: bool = False
-
     def __init__(self,factory = None):
+        Where.__init__(self)
+        From.__init__(self)
+        Limit.__init__(self)
+        Join.__init__(self)
+        Group.__init__(self)
+        Order.__init__(self)
+
+        self._statements: List = []
+        self._is_distinct: bool = False
+
         self._factory = factory
 
     def add_column(self, column: str, escape: bool = True) -> Self:

@@ -8,11 +8,13 @@ from ..exceptions.query_builder_exception import QueryBuilderException
 
 
 class InsertUpdate(Into):
-    _columns: List[str] = []
-    _row: List[Any] = []
-    _updates: Dict = {}
-
     def __init__(self, factory=None):
+        Into.__init__(self)
+
+        self._columns: List[str] = []
+        self._row: List[Any] = []
+        self._updates: Dict = {}
+
         self._factory = factory
 
     def set_columns(self, columns, escape_key=True):

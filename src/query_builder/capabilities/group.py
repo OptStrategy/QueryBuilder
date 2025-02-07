@@ -7,7 +7,8 @@ from ..utils.escape import Escape
 class Group(Escape):
     """Class to manage GROUP BY clause for SQL queries."""
 
-    _group_by: List[str] = []
+    def __init__(self):
+        self._group_by: List[str] = []
 
     def group_by(self, group_columns: Union[str, List[str]], escape: bool = True) -> Self:
         """

@@ -7,7 +7,8 @@ from ..utils.escape import Escape
 class From(Escape):
     """Class to manage the FROM clause for SQL queries."""
 
-    _from_table: str
+    def __init__(self):
+        self._from_table: str
 
     def from_table(self, table: str) -> Self:
         """

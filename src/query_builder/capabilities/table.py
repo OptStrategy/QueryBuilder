@@ -6,8 +6,8 @@ from ..utils.escape import Escape
 
 class Table(Escape):
     """Class to manage the SQL table for queries."""
-
-    _update_table: str
+    def __init__(self):
+        self._update_table: str
 
     def table(self, table: str) -> Self:
         """

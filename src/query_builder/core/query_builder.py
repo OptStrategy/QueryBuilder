@@ -7,7 +7,6 @@ from ..clauses.update import Update
 
 
 class QueryBuilder:
-
     def __init__(
             self,
             factory

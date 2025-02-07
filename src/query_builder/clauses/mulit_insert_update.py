@@ -9,11 +9,14 @@ from ..exceptions.query_builder_exception import QueryBuilderException
 
 
 class MultiInsertUpdate(Into, AddRow):
-    _alias: str
-    _rows: List[Any] = []  # TODO: maybe the type of the list must be str
-    _updates: Dict[str, Any] = {}
-
     def __init__(self, factory=None):
+        Into.__init__(self)
+        AddRow.__init__(self)
+
+        self._alias: str
+        self._rows: List[Any] = []  # TODO: maybe the type of the list must be str
+        self._updates: Dict[str, Any] = {}
+
         self._factory = factory
 
     def set_columns(self, columns, escape_key=True) -> Self:

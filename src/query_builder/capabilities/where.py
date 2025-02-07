@@ -4,7 +4,8 @@ from ..utils.escape import Escape
 
 
 class Where(Escape):
-    _where_statements: List = []
+    def __init__(self):
+        self._where_statements: List = []
 
     def where(self, key: str, value, escape_value=True, escape_key=True) -> Self:
         """Add a WHERE clause with an equality condition."""

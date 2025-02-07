@@ -7,7 +7,8 @@ from ..utils.escape import Escape
 class Into(Escape):
     """Class to manage INTO clause for SQL queries."""
 
-    _into_table: str
+    def __init__(self):
+        self._into_table: str
 
     def into(self, table: str) -> Self:
         """

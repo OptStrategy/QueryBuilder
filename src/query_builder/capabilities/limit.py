@@ -1,4 +1,4 @@
-from typing import Self, Union
+from typing import Self, Union, Optional
 
 from ..exceptions.query_builder_exception import QueryBuilderException
 from ..utils.escape import Escape
@@ -7,8 +7,9 @@ from ..utils.escape import Escape
 class Limit(Escape):
     """Class to manage limit and offset in SQL queries."""
 
-    _offset: int = None
-    _count: int = None
+    def __init__(self):
+        self._offset: Optional[int] = None
+        self._count: Optional[int] = None
 
     def set_offset(self, offset: Union[int, float]) -> Self:
         """
