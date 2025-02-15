@@ -26,8 +26,8 @@ class DBFactory:
     ):
         self._MAX_CONNECTION_COUNT = 200
 
-        self._write_connections: List[DBWorker] = []
-        self._read_connections: List[DBWorker] = []
+        self._write_pool = None
+        self._read_pool = None
 
         self._logs: List[Dict] = []
         self._host = host
@@ -43,92 +43,83 @@ class DBFactory:
         self._debug_mode = debug_mode
 
     async def create_connections(self):
-        """Create DB connections using aiomysql."""
-        if self._write_connections or self._read_connections:
-            raise DBFactoryException("Connections Already Created")
+        """Create connection pools for write and read operations."""
+        if self._write_pool or self._read_pool:
+            raise DBFactoryException("Connection pools already created")
 
-        # Create write connections
-        for _ in range(self._write_instance_count):
-            connection = await aiomysql.connect(
+        try:
+            # Create write connection pool
+            self._write_pool = await aiomysql.create_pool(
                 host=self._host,
                 port=self._write_port,
                 user=self._username,
                 password=self._password,
                 db=self._db_name,
                 charset=self._charset,
-                autocommit=True
+                autocommit=True,
+                maxsize=self._write_instance_count
             )
-            self._write_connections.append(DBWorker(connection))
 
-        # Create read connections
-        for _ in range(self._read_instance_count):
-            connection = await aiomysql.connect(
+            # Create read connection pool
+            self._read_pool = await aiomysql.create_pool(
                 host=self._host,
                 port=self._read_port,
                 user=self._username,
                 password=self._password,
                 db=self._db_name,
                 charset=self._charset,
-                autocommit=True
+                autocommit=True,
+                maxsize=self._read_instance_count
             )
-            self._read_connections.append(DBWorker(connection))
 
-        print('Connected')
-
-    def get_query_builder(self) -> QueryBuilder:
-        if not self._read_connections or not self._write_connections:
-            raise DBFactoryException("Connections Not Created")
-
-        return QueryBuilder(self)
+            print("Connection pools created successfully")
+        except Exception as e:
+            raise DBFactoryException(f"Failed to create connection pools: {e}")
 
     async def query(self, query: str) -> DBResult:
+        """Run a query using either a write or read connection pool."""
+        # Determine if the query is a write operation
         is_write = not query.lower().startswith(('select', 'show'))
-        best_connections = await self.__get_best_connection()
+        pool = self._write_pool if is_write else self._read_pool
 
-        connection = self._write_connections[best_connections['write']] if is_write else self._read_connections[
-            best_connections['read']]
+        if not pool:
+            raise DBFactoryException("Connection pools not initialized")
 
-        if not isinstance(connection, DBWorker):
-            raise DBFactoryException("Connections Not Instance of Worker / Restart App")
+        async with pool.acquire() as connection:
+            worker = DBWorker(connection)  # Create a DBWorker for this connection
 
-        if not self._debug_mode:
-            return await connection.query(query)
+            if not self._debug_mode:
+                return await worker.query(query)
 
-        start_time = asyncio.get_running_loop().time()
-        result = await connection.query(query)
-        end_time = asyncio.get_running_loop().time()
-        self._logs.append({
-            'query': query,
-            'took': end_time - start_time,
-            'isWrite': is_write,
-            'status': result  # You can adjust this based on how you handle query results
-        })
+            # Debug mode
+            start_time = asyncio.get_running_loop().time()
+            result = await worker.query(query)
+            end_time = asyncio.get_running_loop().time()
 
-        return result
+            self._logs.append({
+                'query': query,
+                'took': end_time - start_time,
+                'isWrite': is_write,
+                'status': result.is_success,
+            })
 
-    async def __get_best_connection(self) -> Dict[str, int]:
-        if not self._read_connections or not self._write_connections:
-            raise DBFactoryException("Connections Not Created")
+            return result
 
-        min_write_jobs = self._MAX_CONNECTION_COUNT
-        min_jobs_writer_connection = -1
+    async def close_connections(self):
+        """Close write and read connection pools."""
+        if self._write_pool:
+            self._write_pool.close()
+            await self._write_pool.wait_closed()
 
-        for i, write_connection in enumerate(self._write_connections):
-            tmp_write_jobs = write_connection.get_jobs()
-            if tmp_write_jobs < min_write_jobs:
-                min_write_jobs = tmp_write_jobs
-                min_jobs_writer_connection = i
+        if self._read_pool:
+            self._read_pool.close()
+            await self._read_pool.wait_closed()
 
-        min_read_jobs = self._MAX_CONNECTION_COUNT
-        min_jobs_reader_connection = -1
+        print("Connection pools closed successfully")
 
-        for s, read_connection in enumerate(self._read_connections):
-            tmp_read_jobs = read_connection.get_jobs()
-            if tmp_read_jobs < min_read_jobs:
-                min_read_jobs = tmp_read_jobs
-                min_jobs_reader_connection = s
+    def get_query_builder(self) -> QueryBuilder:
+        """Retrieve a query builder instance."""
+        if not self._read_pool or not self._write_pool:
+            raise DBFactoryException("Connection pools not created")
 
-        return {
-            'write': min_jobs_writer_connection,
-            'read': min_jobs_reader_connection
-        }
+        return QueryBuilder(self)

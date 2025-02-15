@@ -9,9 +9,10 @@ from ..core.query_result import QueryResult
 class DBWorker:
     def __init__(self, connection: aiomysql.Connection):
         self._connection: aiomysql.Connection = connection
-        self._jobs: int = 0
+        self._jobs: int = 0  # Tracks the number of jobs, for compatibility with existing design
 
     async def query(self, sql: str) -> DBResult:
+        """Execute a query and handle the result."""
         self.start_job()
         try:
             result = await self.execute_query(sql)
@@ -22,14 +23,16 @@ class DBWorker:
             return self.handle_exception(e)
 
     async def execute_query(self, query: str) -> QueryResult:
+        """Execute the raw query and return a QueryResult."""
         async with self._connection.cursor() as cursor:
             await cursor.execute(query)
+
             if cursor.description is None:
-                # For INSERT queries, no result fields or rows are returned
+                # Non-SELECT queries (e.g., INSERT, UPDATE, DELETE)
                 result_fields = None
                 result_rows = None
             else:
-                # For SELECT queries, cursor.description contains column info
+                # SELECT queries
                 result_fields = [desc[0] for desc in cursor.description]
                 result_rows = await cursor.fetchall()
 
@@ -44,6 +47,7 @@ class DBWorker:
             )
 
     def handle_result(self, result: QueryResult) -> DBResult:
+        """Process the QueryResult into a DBResult."""
         if result.result_rows is not None:
             def map_to_dict(row):
                 return {result.result_fields[i]: value for i, value in enumerate(row)}
@@ -62,19 +66,24 @@ class DBWorker:
         )
 
     def handle_exception(self, exception: Exception) -> DBResult:
+        """Handle any exceptions that occur during query execution."""
         return DBResult(
             is_success=False,
             message=str(exception)
         )
 
     def start_job(self) -> None:
+        """Increment the job counter."""
         self._jobs += 1
 
     def end_job(self) -> None:
+        """Decrement the job counter."""
         self._jobs -= 1
 
     def get_connection(self) -> aiomysql.Connection:
+        """Retrieve the underlying connection (if needed)."""
         return self._connection
 
     def get_jobs(self) -> int:
+        """Retrieve the current job count."""
         return self._jobs
