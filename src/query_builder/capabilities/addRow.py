@@ -42,7 +42,7 @@ class AddRow(Escape):
         :raises QueryBuilderException: If the input is not a multi-dimensional array.
         :return: self, for chaining purposes.
         """
-        if len(rows) == len(rows[0]):
+        if not rows or not isinstance(rows[0], list):
             raise QueryBuilderException("Array must be MultiDimensional")
 
         for row in rows:

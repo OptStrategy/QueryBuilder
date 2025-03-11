@@ -1,15 +1,17 @@
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 
 import aiomysql
 
 from .db_result import DBResult
-from ..core.query_result import QueryResult
+from .query_result import QueryResult
+from ..exceptions.db_factory_exception import DBFactoryException
 
 
 class DBWorker:
     def __init__(self, connection: aiomysql.Connection):
         self._connection: aiomysql.Connection = connection
         self._jobs: int = 0  # Tracks the number of jobs, for compatibility with existing design
+        self._current_transaction = None  # Remove type hint to avoid circular import
 
     async def query(self, sql: str) -> DBResult:
         """Execute a query and handle the result."""
@@ -87,3 +89,18 @@ class DBWorker:
     def get_jobs(self) -> int:
         """Retrieve the current job count."""
         return self._jobs
+
+    def start_transaction(self):
+        """Create and return a new transaction instance."""
+        if self._current_transaction and self._current_transaction.is_active:
+            raise DBFactoryException("A transaction is already active")
+        
+        # Import here to avoid circular import
+        from .transaction import Transaction    
+        self._current_transaction = Transaction(self)
+        return self._current_transaction
+
+    @property
+    def has_active_transaction(self) -> bool:
+        """Check if there's an active transaction."""
+        return self._current_transaction is not None and self._current_transaction.is_active

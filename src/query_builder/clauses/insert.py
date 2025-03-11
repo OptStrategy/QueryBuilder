@@ -1,4 +1,4 @@
-from typing import List
+from typing import List, Union
 
 from ..capabilities.addRow import AddRow
 from ..capabilities.into import Into
@@ -12,10 +12,10 @@ class Insert(Into, AddRow):
     def __init__(self, factory=None):
         Into.__init__(self)
         AddRow.__init__(self)
-
         self._factory = factory
 
-    def set_columns(self, columns: List[str], escape_key=True):
+    def set_columns(self, columns: List[str], escape_key=True) -> 'Insert':
+        """Set the columns for the insert operation."""
         if len(self._rows) != 0:
             raise QueryBuilderException("Instance has some rows, so columns can't change")
 
@@ -25,7 +25,8 @@ class Insert(Into, AddRow):
         ]
         return self
 
-    def compile(self):
+    def compile(self) -> Union[Query, EQuery]:
+        """Compile the insert query."""
         if not self._into_table or not self._into_table.strip():
             raise QueryBuilderException("Table Required")
 
